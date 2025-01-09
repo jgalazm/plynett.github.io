@@ -41,6 +41,7 @@ export function displayCalcConstants(calc_constants, total_time) {
     addTextToContainer(`Courant Number: ${calc_constants.Courant_num}`, container);
     addTextToContainer(`Grid Size (m): ${Math.round(calc_constants.dx*1000)/1000}`, container);
     addTextToContainer(`Time Step (s): ${Math.round(calc_constants.dt * 1000) / 1000}`, container);
+    addTextToContainer(`Iterations per simulated second (s): ${Math.round(1/calc_constants.dt)}`, container);
     addTextToContainer(`Base (deep-water) Depth (m): ${Math.round(calc_constants.base_depth * 1000) / 1000}`, container);
     addBoundaryDescription("West", calc_constants.west_boundary_type, container);
     addBoundaryDescription("East", calc_constants.east_boundary_type, container);
@@ -59,7 +60,7 @@ export function displayCalcConstants(calc_constants, total_time) {
     addTextToContainer(`Turbulent Decay Coefficient: ${calc_constants.whiteWaterDecayRate}`, container);
     addSpacerToContainer(container);
     addTextToContainer(`--- Runtime Parameters ---`, container);
-    addTextToContainer(`Simulated Time (min) Since Config Change: ${Math.round(total_time / 60. * 1000) / 1000}`, container);
+    addTextToContainer(`Simulated Time (s) Since Config Change: ${Math.round(total_time * 1000) / 1000}`, container);
     addTextToContainer(`Faster-than-Realtime Ratio: ${Math.round(total_time / calc_constants.elapsedTime_update * 10) / 10}`, container);
     addTextToContainer(`Render Frame Interval: ${calc_constants.render_step}`, container);
     
@@ -92,8 +93,14 @@ export function displaySimStatus(calc_constants, total_time, total_time_since_ht
         addTextToContainer(`Boussinesq Simulation`, container);
     }
     addTextToContainer(`,      Simulated Time (min): ${Math.round(total_time / 60. * 10) / 10}`, container);
+
+    // faster-than-realtime ratio = tiempo simulado / tiepmo real
+    // si 1s simulado se demora 0.5s entonces ratio = 2 
     addTextToContainer(`,      Faster-than-Realtime Ratio: ${Math.round(total_time_since_http_update / calc_constants.elapsedTime_update * 10) / 10}`, container);
     
+    let frame_count_since_http_update = (total_time_since_http_update/calc_constants.dt);
+    // fps = iteraciones / tiempo real
+    addTextToContainer(`,      FPS: ${(frame_count_since_http_update/calc_constants.elapsedTime_update).toFixed(2)}`, container);
 }
 
 

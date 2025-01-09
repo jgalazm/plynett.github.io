@@ -229,7 +229,6 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     txGoogleMap = create_2D_Texture(device, calc_constants.GMapImageWidth, calc_constants.GMapImageHeight, allTextures);  // used to store the loaded Google Maps image
     txOverlayMap = txGoogleMap;  // needs to be initialized, even if not used
     const txSamplePNGs = create_3D_Image_Texture(device, 1024, 1024, 10, allTextures); // will store all textures to be sampled for photo-realism
-    
     const txWaves = create_1D_Texture(device, calc_constants.numberOfWaves, allTextures);  // stores spectrum wave input
     const txTimeSeries_Locations = create_1D_Texture(device, calc_constants.maxNumberOfTimeSeries, allTextures);  // stores spectrum wave input
     const txTimeSeries_Data = create_1D_Texture(device, calc_constants.maxNumberOfTimeSeries, allTextures);  // stores spectrum wave input
@@ -1596,6 +1595,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
             }
             
         }
+        addFrame();
         
         requestAnimationFrame(frame);  // Call the next frame, restarts the function
 
@@ -2341,7 +2341,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('run-example-simulation-btn').addEventListener('click', function () {  // running with user example files
         initializeWebGPUApp();
         const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
-        setTimeout(updateAllUIElements, delay);
+        setTimeout(()=>{
+            initVideo();
+            updateAllUIElements();
+        }, delay);
 
     });
 
