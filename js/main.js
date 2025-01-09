@@ -27,7 +27,7 @@ import { createComputePipeline, createRenderPipeline, createRenderPipeline_verte
 import { fetchShader, runComputeShader, runCopyTextures } from './Run_Compute_Shader.js';  // function to run shaders, works for all
 import { runTridiagSolver } from './Run_Tridiag_Solver.js';  // function to run PCR triadiag solver, works for all
 import { displayCalcConstants, displaySimStatus, displayTimeSeriesLocations, displaySlideVolume, ConsoleLogRedirection} from './display_parameters.js';  // starting point for display of simulation parameters
-import { addFrame } from "./streaming.js";
+import { addFrame, initVideo } from "./streaming.js";
 
 // Get a reference to the HTML canvas element with the ID 'webgpuCanvas'
 const canvas = document.getElementById('webgpuCanvas');
@@ -2340,11 +2340,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
     document.getElementById('run-example-simulation-btn').addEventListener('click', function () {  // running with user example files
-        initializeWebGPUApp();
-        const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
-        setTimeout(()=>{
-            updateAllUIElements();
-        }, delay);
+        initializeWebGPUApp().then(()=>{
+            // setTimeout(()=>{
+                initVideo();
+                updateAllUIElements();
+            // }, delay);
+        });
+        // const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
     });
 
     // This function will be called when the user clicks "Start Simulation."
