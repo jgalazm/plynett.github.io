@@ -29,6 +29,7 @@ import { runTridiagSolver } from './Run_Tridiag_Solver.js';  // function to run 
 import { displayCalcConstants, displaySimStatus, displayTimeSeriesLocations, displaySlideVolume, ConsoleLogRedirection} from './display_parameters.js';  // starting point for display of simulation parameters
 import { addFrame, initVideo } from "./streaming.js";
 
+let  total_time;
 // Get a reference to the HTML canvas element with the ID 'webgpuCanvas'
 const canvas = document.getElementById('webgpuCanvas');
 
@@ -837,7 +838,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     // Log that the buffers have been set up.
     console.log("Buffers set up.");
 
-    let total_time = 0;          // Initialize time, which might be used for animations or simulations.
+    total_time = 0;          // Initialize time, which might be used for animations or simulations.
     let frame_count = 0;   // Counter to keep track of the number of rendered frames.
     let frame_count_since_http_update = 0;   // Counter to keep track of the number of rendered frames.
     let total_time_since_http_update = 0;          // Initialize time, which might be used for animations or simulations.
@@ -2339,10 +2340,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // run example simulation
 
     // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
-    document.getElementById('run-example-simulation-btn').addEventListener('click', function () {  // running with user example files
-        initializeWebGPUApp().then(()=>{
+    document.getElementById('run-example-simulation-btn').addEventListener('click', async function () {  // running with user example files
+        let fileHandle = await window.showSaveFilePicker({
+            suggestedName: `video.webm`,
+            types: [{
+                description: 'Video File',
+                accept: { 'video/webm': ['.webm'] }
+            }],
+        });     
+        
+        await initializeWebGPUApp().then(async function(){
             // setTimeout(()=>{
-                initVideo();
+             
+                await initVideo(fileHandle);
                 updateAllUIElements();
             // }, delay);
         });
@@ -2539,3 +2549,6 @@ async function updateChartData() {
 
 // Set an interval to update the chart every second (1000 milliseconds)
 setInterval(updateChartData, 1000);
+
+
+export {total_time};
