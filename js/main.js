@@ -730,7 +730,8 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
 
     const vertexShaderCode = await fetchShader('/shaders/vertex.wgsl');
     const vertex3DShaderCode = await fetchShader('/shaders/vertex3D.wgsl');
-    const fragmentShaderCode = await fetchShader('/shaders/fragment.wgsl');
+    // const fragmentShaderCode = await fetchShader('/shaders/fragment.wgsl');
+    const fragmentShaderCode = await fetchShader('/shaders/out_frag.wgsl');
     console.log("Shaders loaded.");
 
     // Configure the pipelines, one for each shader.
