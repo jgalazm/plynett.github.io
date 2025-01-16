@@ -95,6 +95,7 @@ var calc_constants = {
     // define which "Example" to run
     run_example: 0, // index corresponding to examples below
     exampleDirs: [
+        "./examples/san_antonio/d20/",
         "./examples/Ventura/",
         "./examples/Santa_Cruz/",
         "./examples/Santa_Cruz_tsunami/",
@@ -319,7 +320,7 @@ async function init_sim_parameters(canvas, configContent) {
     calc_constants.Py = Math.ceil(Math.log(calc_constants.HEIGHT) / Math.log(2));
 
     calc_constants.exampleDirs = [
-        "./examples/Ventura/",
+        "./examples/san_antonio/d20/",
         "./examples/Santa_Cruz/",
         "./examples/Santa_Cruz_tsunami/",
         "./examples/Barry_Arm/",
