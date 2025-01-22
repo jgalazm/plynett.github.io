@@ -108,22 +108,26 @@ fn fs_main(@location(1) uv: vec2<f32>) -> FragmentOutput {
     let maxWave = globals.colorVal_max;
     let minWave = globals.colorVal_min;
     
+    let maxBottom = 193.27;
+    let minBottom = -248.2;
+
     let bottom = textureSample(bottomTexture, textureSampler, uv).b;
     var waves = textureSample(etaTexture, textureSampler, uv).r;  // free surface elevation
     var color_rgb: vec3<f32>;
+    var wavePosition = f32((waves - minWave) / (maxWave - minWave));
+    var bottomPosition = f32((bottom - minBottom) / (maxBottom - minBottom));
 
 
     if (bottom + globals.delta >= waves) {
         // dry 
 
         // r = 0, g=bathymetry, b=flag is 1 if dry
-        color_rgb = vec3<f32>(0.0, bottom / globals.base_depth, 1.0);
+        color_rgb = vec3<f32>(0.0, bottomPosition, 1.0);
     } else {
         // wet
-        var wavePosition = f32((waves - minWave) / (maxWave - minWave));
 
         // r = wave, g=bathymetry, b = flag is 0 if wet
-        let color_wave = vec3<f32>(wavePosition, bottom, 0.0);
+        let color_wave = vec3<f32>(wavePosition, bottomPosition, 0.0);
         color_rgb = color_wave;
 
     }
